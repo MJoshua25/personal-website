@@ -15,7 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 
 # copy project
-COPY ../ubora-tech/geceme .
+COPY . .
 
 RUN sed -i 's/\r$//g' /usr/src/app/docker-entrypoint.sh
 RUN chmod +x /usr/src/app/docker-entrypoint.sh
