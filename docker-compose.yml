@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   web:
-    build: ../ubora-tech/geceme
+    build: .
     command: ./docker-entrypoint.sh
     volumes:
       - media_files:/usr/src/app/media_cdn
@@ -19,7 +19,7 @@ services:
     env_file:
       - database.env
     ports:
-      - "15432:5432"
+      - "25432:5432"
     restart: unless-stopped
 
   cache:
@@ -36,8 +36,8 @@ services:
       - cache
     restart: unless-stopped
     build:
-      dockerfile: ../ubora-tech/geceme/nginx/Dockerfile
-      context: ../ubora-tech/geceme/nginx
+      dockerfile: Dockerfile
+      context: ./nginx
     ports:
       - "8081:80"
 
