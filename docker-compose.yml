@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  web:
+    build: ../ubora-tech/geceme
+    command: ./docker-entrypoint.sh
+    volumes:
+      - media_files:/usr/src/app/media_cdn
+    env_file:
+      - ./.env.prod
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - database.env
+    ports:
+      - "15432:5432"
+    restart: unless-stopped
+
+  cache:
+    image: redis:6.2.6-alpine
+    volumes:
+      - redis_data:/var/lib/redis
+      - redis_conf:/usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+
+  nginx:
+    depends_on:
+      - web
+      - db
+      - cache
+    restart: unless-stopped
+    build:
+      dockerfile: ../ubora-tech/geceme/nginx/Dockerfile
+      context: ../ubora-tech/geceme/nginx
+    ports:
+      - "8081:80"
+
+volumes:
+  postgres_data:
+  media_files:
+  redis_data:
+  redis_conf:
