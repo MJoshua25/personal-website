@@ -39,7 +39,7 @@ services:
       dockerfile: Dockerfile
       context: ./nginx
     ports:
-      - "8081:80"
+      - "8082:80"
 
 volumes:
   postgres_data:
