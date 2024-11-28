@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     # OTHER APPS #
     'debug_toolbar',
     'django_quill',
+    'django_admin_generator',
 
     # Apps
     'core',

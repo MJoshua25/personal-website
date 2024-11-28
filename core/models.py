@@ -12,6 +12,37 @@ class Standard_model(models.Model):
 	class Meta:
 		abstract = True
   
+class PersonalInfo(Standard_model):
+    first_name = models.CharField(_("first name"), max_length=255)
+    last_name = models.CharField(_("last name"), max_length=50)
+    birth_date = models.DateField(_("birth date"), auto_now=False, auto_now_add=False)
+    resume = models.FileField(_("resume"), upload_to='personal/resume')
+    skills = models.ManyToManyField('Technology', through="PersonalSkill")
+
+
+    class Meta:
+        verbose_name = _("PersonalInfo")
+        verbose_name_plural = _("PersonalInfos")
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
+
+
+class PersonalSkill(Standard_model):
+    personal_info = models.ForeignKey(PersonalInfo, on_delete=models.CASCADE)
+    technology = models.ForeignKey('Technology', on_delete=models.CASCADE)
+    percentage = models.PositiveIntegerField(_("percentage"), validators=[validators.MaxValueValidator(100)])
+    
+
+    class Meta:
+        verbose_name = _("PersonalSkill")
+        verbose_name_plural = _("PersonalSkills")
+
+    def __str__(self):
+        return self.name
+
+
+
 
 class ContactInfo(Standard_model):
     location = models.CharField(_("location"), max_length=50)
